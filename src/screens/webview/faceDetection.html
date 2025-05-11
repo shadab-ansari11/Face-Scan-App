@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+    <style>
+      body { text-align: center; margin-top: 50px; }
+    </style>
+  </head>
+  <body>
+    <h3>Select a photo to detect face</h3>
+    <input id="imageUpload" type="file" accept="image/*" />
+    <canvas id="canvas"></canvas>
+    <script>
+      async function runFaceDetection(image) {
+        await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadomain.com/models');
+
+        const detection = await faceapi.detectAllFaces(image, new faceapi.TinyFaceDetectorOptions());
+
+        // Send result to React Native
+        window.ReactNativeWebView.postMessage(JSON.stringify(detection));
+      }
+
+      document.getElementById('imageUpload').addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        const img = new Image();
+        img.onload = () => runFaceDetection(img);
+        img.src = URL.createObjectURL(file);
+      });
+    </script>
+  </body>
+</html>

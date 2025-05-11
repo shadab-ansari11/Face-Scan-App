@@ -25,3 +25,11 @@ export const deleteUser = (email: string) => {
   storage.set('users', JSON.stringify(users));
 };
 
+// New function to update user's status (present/absent)
+export const updateUserStatus = (email: string, newStatus: 'present' | 'absent') => {
+  const users = getUsers();
+  const updatedUsers = users.map((user: any) =>
+    user.email === email ? { ...user, status: newStatus } : user
+  );
+  storage.set('users', JSON.stringify(updatedUsers));
+};

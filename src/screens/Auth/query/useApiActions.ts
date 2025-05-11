@@ -25,14 +25,12 @@ export interface IRegisterRequest {
   email: string;
   password: string;
   confirmPassword: string;
-  faceScan: string; // assume base64 image string or file path
+  faceScan: string;
 }
 
 const useApiActions = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<RootNavigationType>();
-  // API  userName: john@mail.com
-  // API password changeme
   const tryLogin = async (values: ILoginRequest) => {
     try {
       const users = JSON.parse(storage.getString('users') || '[]');
@@ -122,6 +120,8 @@ const useApiActions = () => {
         password: values.password,
         confirmPassword: values.confirmPassword,
         faceScan: values.faceScan, // Save face scan data
+        createdAt: new Date().toISOString(),
+        status: 'Present',
       };
       console.log('newUser', newUser);
 
